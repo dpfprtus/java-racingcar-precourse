@@ -13,7 +13,7 @@ public class Car {
     // 추가 기능 구현
     public void generateRandomNumberAndMove() {
         int randomNumber = Randoms.pickNumberInRange(0, 9);
-        if (randomNumber > 4) {
+        if (randomNumber >= 4) {
             this.position++;
         }
     }

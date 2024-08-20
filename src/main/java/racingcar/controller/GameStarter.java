@@ -4,37 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import racingcar.model.Car;
 import racingcar.model.Winner;
-import racingcar.view.IO;
+import racingcar.view.InputView;
+import racingcar.view.OutputView;
 
 public class GameStarter {
 
-    private final IO io;
+    private final InputView inputView;
+    private final OutputView outputView;
 
-    public GameStarter(IO io) {
-        this.io = io;
+    public GameStarter(InputView inputView,OutputView outputView) {
+        this.inputView = inputView;
+        this.outputView = outputView;
     }
 
     public void start() {
-        io.printCarNameInputMessage();
+        outputView.printCarNameInputMessage();
         List<Car> carList = getCarList();
-        io.printCountInputMessage();
+        outputView.printCountInputMessage();
         forward(getTryCount(), carList);
         Winner winner = new Winner(carList);
-        io.printWinner(winner.getWinnerNames());
+        outputView.printWinner(winner.getWinnerNames());
     }
 
 
     private void forward(int tryCount, List<Car> carList) {
         for (int i = 0; i < tryCount; i++) {
             carList.forEach(Car::generateRandomNumberAndMove);
-            io.printResultMessage();
-            io.printCarPosition(carList);
+            outputView.printResultMessage();
+            outputView.printCarPosition(carList);
         }
     }
 
     private List<Car> getCarList() {
         List<Car> carList = new ArrayList<>();
-        for (String carName : io.inputCarNames()) {
+        for (String carName : inputView.inputCarNames()) {
             carList.add(new Car(carName));
         }
         try {
@@ -59,7 +62,7 @@ public class GameStarter {
     private int getTryCount() {
         int tryCount = 0;
         try {
-            tryCount = io.inputTryCount();
+            tryCount = inputView.inputTryCount();
             tryCountValidate(tryCount);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());

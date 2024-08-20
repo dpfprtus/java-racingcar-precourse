@@ -1,12 +1,9 @@
 package racingcar.view;
 
-import camp.nextstep.edu.missionutils.Console;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import racingcar.model.Car;
 
-public class IO {
+public class OutputView {
 
     public void printCarNameInputMessage() {
         System.out.println("경주할 자동차 이름을 입력하세요(이름은 쉼표(,) 기준으로 구분)");
@@ -37,23 +34,4 @@ public class IO {
         }
         System.out.println();
     }
-
-    public List<String> inputCarNames() {
-        String input = Console.readLine();
-        return Arrays.asList(input.split(","));
-    }
-
-    public int inputTryCount() {
-        //숫자가 아닐 시 예외를 발생한다.
-        int tryCount;
-        try {
-            tryCount = Integer.parseInt(Console.readLine());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("[ERROR] 횟수는 숫자이어야 합니다.");
-        }
-        return tryCount;
-    }
-
-
-
 }

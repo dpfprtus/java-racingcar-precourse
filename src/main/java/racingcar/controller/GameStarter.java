@@ -3,6 +3,8 @@ package racingcar.controller;
 import java.util.ArrayList;
 import java.util.List;
 import racingcar.model.Car;
+import racingcar.model.CarNameValidator;
+import racingcar.model.TryCountValidator;
 import racingcar.model.Winner;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
@@ -37,11 +39,12 @@ public class GameStarter {
 
     private List<Car> getCarList() {
         List<Car> carList = new ArrayList<>();
+        CarNameValidator carNameValidator = new CarNameValidator(carList);
         for (String carName : inputView.inputCarNames()) {
             carList.add(new Car(carName));
         }
         try {
-            carListValidation(carList);
+            carNameValidator.validate();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             this.getCarList();
@@ -49,21 +52,14 @@ public class GameStarter {
         return carList;
     }
 
-    private void carListValidation(List<Car> carList) {
-        if (carList.isEmpty()) {
-            throw new IllegalArgumentException("[ERROR] 차량이 존재하지 않습니다.");
-        }
-        if (carList.size() != carList.stream().map(Car::getName).distinct().count()) {
-            throw new IllegalArgumentException("[ERROR] 중복된 차량이름이 존재합니다.");
-        }
-    }
-
 
     private int getTryCount() {
+
         int tryCount = 0;
         try {
             tryCount = inputView.inputTryCount();
-            tryCountValidate(tryCount);
+            TryCountValidator tryCountValidator = new TryCountValidator(tryCount);
+            tryCountValidator.validate();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             this.getTryCount();
@@ -71,10 +67,6 @@ public class GameStarter {
         return tryCount;
     }
 
-    private void tryCountValidate(int tryCount) {
-        if (tryCount < 1) {
-            throw new IllegalArgumentException("[ERROR] 시도 횟수는 1 이상이어야 합니다.");
-        }
-    }
+
 
 }
